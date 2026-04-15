@@ -3,7 +3,6 @@
  * @author      pfroch <info@easySolutionsIT.de>
  * @link        http://easySolutionsIT.de
  * @copyright   e@sy Solutions IT 2014
- * @license     EULA
  * @package     esitlib
  * @filesource  bootstrap.php
  * @version     2.0.0
@@ -19,7 +18,6 @@
 
 $buildDir       = __DIR__ . '/..';
 $rootDir        = __DIR__ . '/../..';
-$testCase       = __DIR__ . '/EsitTestCase.php';
 
  if (substr_count(__DIR__, '/src/Esit/')) {
      $arrPaths = explode('/src/Esit/', __DIR__);
@@ -43,24 +41,16 @@ $testCase       = __DIR__ . '/EsitTestCase.php';
      // Globalen Composer Autoload einbinden
      include_once($globalComposerAutoloadPath);
      $autoloadFound = true;
- } else {
-     if (is_file("$buildDir/tools/phpab")) {
-         system("$buildDir/tools/phpab -o $localAutoloadPath $rootDir/Classes " . CONTAO_ROOT . "/vendor");
+ } elseif (is_file("$buildDir/tools/phpab")) {
+     system("$buildDir/tools/phpab -o $localAutoloadPath $rootDir/Classes " . CONTAO_ROOT . "/vendor");
 
-         if (is_file($localAutoloadPath)) {
-             // Lokalen Autoload einbinden
-             include_once($localAutoloadPath);
-             $autoloadFound = true;
-         }
+     if (is_file($localAutoloadPath)) {
+         // Lokalen Autoload einbinden
+         include_once($localAutoloadPath);
+         $autoloadFound = true;
      }
  }
 
  if (false === $autoloadFound) {
      throw new \Exception("No autoload found");
  }
-
-if (is_file($testCase)) {
-    include_once($testCase);
-} else {
-    throw new \Exception('Testcase is missing: ' . $testCase);
-}
